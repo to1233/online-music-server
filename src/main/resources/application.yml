@@ -1,0 +1,5 @@
+baseUrl:
+  cloud: https://music.163.com/weapi
+  songUrl: http://music.163.com/#/song?id=
+server:
+  port: 8889
