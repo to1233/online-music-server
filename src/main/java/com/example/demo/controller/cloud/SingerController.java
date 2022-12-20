@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.cloud;
 
 import com.example.demo.common.AjaxResult;
 import com.example.demo.pojo.vo.singer.SearchSingerDetailVo;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @Description
  */
 @RestController
-@RequestMapping("/singer")
+@RequestMapping("/cloud/singer")
 public class SingerController {
 
     @Resource

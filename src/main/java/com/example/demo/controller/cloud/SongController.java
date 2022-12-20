@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.cloud;
 
 import com.example.demo.common.AjaxResult;
 import com.example.demo.pojo.vo.song.*;
@@ -16,16 +16,14 @@ import java.util.List;
  * @Description
  */
 @RestController
-@RequestMapping("/song")
+@RequestMapping("/cloud/song")
 public class SongController {
 
 
     @Resource
     private CloudSongMusicImpl cloudMusic;
 
-    /**
-     * 测试搜索
-     */
+
     /**
      * 根据关键词来搜索歌曲信息
      * @param cloudSearchSuggestVo 搜索参数对象
@@ -34,6 +32,12 @@ public class SongController {
     @PostMapping("/searchSuggest")
     public AjaxResult searchSuggest(@RequestBody CloudSearchSuggestVo cloudSearchSuggestVo) {
         return AjaxResult.ajaxResult(cloudMusic.searchSuggest(cloudSearchSuggestVo));
+    }
+
+
+    @GetMapping("/hotSearch")
+    public AjaxResult hotSearch() {
+        return AjaxResult.ajaxResult(cloudMusic.hotSearch());
     }
 
     /**

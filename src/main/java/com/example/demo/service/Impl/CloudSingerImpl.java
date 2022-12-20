@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.pojo.ParamVo;
 import com.example.demo.pojo.vo.singer.SearchSingerDetailVo;
 import com.example.demo.pojo.vo.singer.SearchSingerVo;
-import com.example.demo.service.base.BaseService;
+import com.example.demo.service.base.BaseCloudService;
 import com.example.demo.utils.EncryptUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,22 +17,18 @@ import org.springframework.stereotype.Service;
  * @Description
  */
 @Service
-public class CloudSingerImpl extends BaseService {
-
+public class CloudSingerImpl extends BaseCloudService {
 
     @Value("${baseUrl.cloud}")
     private String baseUrl;
 
-    @Override
     public JSONObject findSinger(SearchSingerVo searchSingerVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(searchSingerVo));
-        return super.sendCloudRequest(baseUrl + "/artist/top", paramVo, "");
+        return sendCloudRequest(baseUrl + "/artist/top", paramVo, "");
     }
 
-
-    @Override
     public JSONObject findSingerDetailById(String singerId, SearchSingerDetailVo searchSingerDetailVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(searchSingerDetailVo));
-        return super.sendCloudRequest(baseUrl + "/v1/artist/" +singerId, paramVo, "");
+        return sendCloudRequest(baseUrl + "/v1/artist/" + singerId, paramVo, "");
     }
 }

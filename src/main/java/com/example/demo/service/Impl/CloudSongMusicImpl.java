@@ -8,11 +8,14 @@ import com.example.demo.pojo.vo.song.CloudSearchSuggestVo;
 import com.example.demo.pojo.vo.song.SongSearchIdVo;
 import com.example.demo.pojo.vo.song.SongSearchUrlByIdVo;
 import com.example.demo.pojo.vo.song.SongSearchVo;
-import com.example.demo.service.base.BaseService;
+import com.example.demo.service.base.BaseCloudService;
 import com.example.demo.utils.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zhangyang
@@ -22,16 +25,15 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class CloudSongMusicImpl extends BaseService {
-
+public class CloudSongMusicImpl extends BaseCloudService {
     @Value("${baseUrl.cloud}")
     private String baseUrl;
 
-    @Override
+
     public JSONObject search(SongSearchVo songSearchVo) {
-        songSearchVo.setTotal("false");
+        songSearchVo.setTotal("true");
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(songSearchVo));
-        JSONObject result = super.sendCloudRequest(baseUrl + "/cloudsearch/get/web", paramVo, "");
+        JSONObject result = sendCloudRequest( baseUrl+"/cloudsearch/get/web", paramVo, "");
         return result.getJSONObject("result");
     }
 
@@ -40,25 +42,38 @@ public class CloudSongMusicImpl extends BaseService {
      *
      * @return
      */
-    @Override
     public JSONObject searchSuggest(CloudSearchSuggestVo cloudSearchSuggestVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(cloudSearchSuggestVo));
-        JSONObject result = super.sendCloudRequest(baseUrl + "/search/suggest/web?csrf_token=", paramVo, "");
+        JSONObject result = sendCloudRequest(baseUrl+"/search/suggest/web?csrf_token=", paramVo, "");
         return result.getJSONObject("result");
     }
 
-    @Override
     public JSONArray findSongDetailById(SongSearchIdVo songSearchIdVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(songSearchIdVo));
-        JSONObject result =  super.sendCloudRequest(baseUrl + "/v3/song/detail", paramVo, "");
+        JSONObject result = sendCloudRequest( baseUrl+"/v3/song/detail", paramVo, "");
         return result.getJSONArray("songs");
     }
 
 
-    @Override
     public JSONArray findSongUrlById(SongSearchUrlByIdVo songSearchUrlByIdVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(songSearchUrlByIdVo));
-        JSONObject result =   super.sendCloudRequest(baseUrl + "/song/enhance/player/url", paramVo, "");
+        JSONObject result = sendCloudRequest( baseUrl+"/song/enhance/player/url", paramVo, "");
         return result.getJSONArray("data");
     }
+
+
+    /**
+     * 获取热门歌曲数据
+     * @return JSONObject
+     */
+    public JSONObject hotSearch() {
+        Map<String,Integer>  params = new HashMap<>();
+        params.put("type",1111);
+        ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(params));
+        JSONObject result = sendCloudRequest( baseUrl+"/search/hot", paramVo, "");
+        return result.getJSONObject("result");
+    }
+
+
+
 }

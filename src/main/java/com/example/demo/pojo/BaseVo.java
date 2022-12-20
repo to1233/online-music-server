@@ -19,7 +19,7 @@ public class BaseVo {
     /**
      * 页大小
      */
-    private String  limit="30";
+    private String  limit="15";
 
     /**
      * 数据偏移量

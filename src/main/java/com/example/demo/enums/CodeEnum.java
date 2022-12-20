@@ -36,7 +36,8 @@ public enum CodeEnum {
     LIKE_FAIL(1004,"点赞失败"),
     UPDATE_FAIL(1005,"更新异常"),
     NOT_USER_NAME(1006,"用户名不存在"),
-    NOT_PHONE(1007,"手机号不存在");
+    NOT_PHONE(1007,"手机号不存在"),
+    LOGIN_ID_COMPARE(1008,"当前登录人员不匹配");
 
     @Getter
     private final Integer code;

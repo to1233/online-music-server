@@ -3,3 +3,15 @@ baseUrl:
   songUrl: http://music.163.com/#/song?id=
 server:
   port: 8889
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/music?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456  # 服务器mysql 的密码
+  cache:
+    type: jcache
+    jcache:
+      config: classpath:ehcache-3.x.xml
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml

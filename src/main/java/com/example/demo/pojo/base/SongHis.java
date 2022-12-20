@@ -1,14 +1,31 @@
 package com.example.demo.pojo.base;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
-public class Song {
+public class SongHis {
 
     /**
      * 保存主键
      */
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * 用户主键
+     */
+    private Integer userId;
+
+    /**
+     * 歌曲信息id
+     */
+    private String songId;
 
 
     /**
@@ -32,6 +49,12 @@ public class Song {
     private String singerName;
 
     /**
+     * 专辑名称
+     */
+    private String album;
+
+
+    /**
      * 歌手id
      */
     private String singerId;
@@ -51,10 +74,10 @@ public class Song {
      */
     private Boolean hoverFlag;
 
-
     /**
-     * 专辑名称
+     * 创建时间
      */
-    private String album;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
 }

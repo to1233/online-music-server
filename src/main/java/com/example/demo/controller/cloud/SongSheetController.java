@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.cloud;
 
 import com.example.demo.common.AjaxResult;
 import com.example.demo.pojo.vo.songsheet.SearchSheetDetailVo;
@@ -14,9 +14,9 @@ import javax.annotation.Resource;
  * @Date 2022/10/23 11:04
  * @Description
  */
-@RequestMapping("/songSheet")
+@RequestMapping("/cloud/songSheet")
 @RestController
-public class SongSheetController {
+    public class SongSheetController {
 
     @Resource
     private CloudSongSheetImpl cloudSongSheetService;

@@ -3,13 +3,12 @@ package com.example.demo.service.base;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.pojo.ParamVo;
-import com.example.demo.pojo.vo.singer.SearchSingerDetailVo;
-import com.example.demo.pojo.vo.singer.SearchSingerVo;
-import com.example.demo.pojo.vo.song.*;
-import com.example.demo.pojo.vo.songsheet.SearchSheetDetailVo;
-import com.example.demo.pojo.vo.songsheet.SearchSongSheetVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,16 +24,13 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-public class BaseService {
-
+public class BaseCloudService {
 
     @Resource
     private RestTemplate restTemplate;
-    /**
-     *
-     * @param searchVo
-     * @return
-     */
+
+
+
     /**
      * 共有的请求方法
      *
@@ -60,7 +56,7 @@ public class BaseService {
             requestBody.add("encSecKey", paramVo.getEncSecKey());
 
             HttpEntity<MultiValueMap<String, String>> formEntity = new HttpEntity<>(requestBody, headers);
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(aimUrl, formEntity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity( aimUrl, formEntity, String.class);
             String body2 = responseEntity.getBody(); //响应体
             JSONObject result = JSONObject.parseObject(body2);
             log.info("{}", result);
@@ -70,64 +66,5 @@ public class BaseService {
         }
         return null;
     }
-
-    public JSONObject searchSuggest(CloudSearchSuggestVo cloudSearchSuggestVo) {
-        return null;
-    }
-
-    public JSONObject search(SongSearchVo songSearchVo) {
-        return null;
-    }
-
-    public JSONArray findSongDetailById(SongSearchIdVo SearchSongSheetVo) {
-        return null;
-    }
-
-    public JSONArray findSongUrlById(SongSearchUrlByIdVo songSearchUrlByIdVo) {
-        return null;
-    }
-
-
-    /**
-     * 分页查询对应的歌单数据
-     * @param searchSongSheetVo 歌单搜索数据
-     * @return  JSONObject
-     */
-    public JSONObject findSongSheet(SearchSongSheetVo searchSongSheetVo) {
-        return null;
-    }
-
-    /**
-     * 查询歌单详情信息
-     * @param searchSheetDetailVo 歌单详情id
-     * @return
-     */
-    public JSONObject findSheetInfoById(SearchSheetDetailVo searchSheetDetailVo) {
-        return null;
-    }
-
-    /**
-     * 分页查询歌手集合
-     * @param searchSingerVo 歌手搜索信息
-     * @return JSONObject
-     */
-    public JSONObject findSinger(SearchSingerVo searchSingerVo) {
-        return null;
-    }
-
-    /**
-     * 根据id来查询对应的歌手详情信息
-     * @param searchSingerDetailVo 搜索信息
-     * @return
-     */
-    public JSONObject findSingerDetailById(String singerId, SearchSingerDetailVo searchSingerDetailVo) {
-        return null;
-    }
-
-    /**
-     * 源登录cookie
-     */
-    public String cookieString;
-
 
 }

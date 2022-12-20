@@ -1,6 +1,5 @@
 package com.example.demo.pojo.vo.song;
 
-import com.example.demo.pojo.base.IdVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
