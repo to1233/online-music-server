@@ -1,5 +1,7 @@
 package com.example.demo.pojo.base;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
@@ -17,6 +19,7 @@ public class SysUser {
     /**
      * 用户主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -53,6 +56,11 @@ public class SysUser {
      * 账号创建时间
      */
     private Date createTime;
+
+    /**
+     * 账号信息更新时间
+     */
+    private Date updateTime;
 
     /**
      * 个人用户简介

@@ -15,10 +15,15 @@ import com.example.demo.service.ISysUserService;
 import com.example.demo.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,33 +45,6 @@ public class SystemController {
     @Resource
     private ISysUserService iSysUserService;
 
-    /**
-     * 登录信息
-     *
-     * @param loginVo
-     * @return
-     */
-    @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginVo loginVo) {
-        SysUser sysUser = iSysUserService.findUserByPhone(loginVo.getPhone());
-        // 核验密码
-        if (sysUser == null) {
-            return AjaxResult.error(CodeEnum.NOT_PHONE);
-        }
-        if (checkPassword(sysUser, loginVo.getPassword())) {
-            LoginSuccessVo loginSuccessVo = new LoginSuccessVo();
-            BeanUtils.copyProperties(sysUser, loginSuccessVo);
-            String token = JWTUtil.createToken(sysUser);
-            loginSuccessVo.setToken(token);
-            loginSuccessVo.setUserId(sysUser.getId());
-            iSysUserService.updateUserById(sysUser);
-            return AjaxResult.success("登录成功", loginSuccessVo);
-        } else {
-            log.warn("登录失败，密码错误 手机号：{}，原始密码:{}", loginVo.getPhone(), sysUser.getPassword());
-            return AjaxResult.error(CodeEnum.LOGIN_FAIL);
-        }
-
-    }
 
     @Resource
     private ISongHisService iSongHisService;
@@ -91,7 +69,6 @@ public class SystemController {
         }
         return AjaxResult.success();
     }
-
 
 
     @PostMapping("/saveUserTempPlayList")
@@ -242,6 +219,64 @@ public class SystemController {
 
 
     /**
+     * 登录信息
+     *
+     * @param loginVo
+     * @return
+     */
+    @PostMapping("/login")
+    public AjaxResult login(@RequestBody LoginVo loginVo) {
+        SysUser sysUser = iSysUserService.findUserByPhone(loginVo.getPhone());
+        // 核验密码
+        if (sysUser == null) {
+            return AjaxResult.error(CodeEnum.NOT_PHONE);
+        }
+        if (checkPassword(sysUser, loginVo.getPassword())) {
+            LoginSuccessVo loginSuccessVo = new LoginSuccessVo();
+            BeanUtils.copyProperties(sysUser, loginSuccessVo);
+            String token = JWTUtil.createToken(sysUser);
+            loginSuccessVo.setToken(token);
+            loginSuccessVo.setUserId(sysUser.getId());
+            return AjaxResult.success("登录成功", loginSuccessVo);
+        } else {
+            log.warn("登录失败，密码错误 手机号：{}，原始密码:{}", loginVo.getPhone(), sysUser.getPassword());
+            return AjaxResult.error(CodeEnum.LOGIN_FAIL);
+        }
+
+    }
+
+    @Value("${upload.showUrl}")
+    private String showUrl;
+
+    @PostMapping("/uploadHead/{userId}")
+    public AjaxResult uploadHead(HttpServletRequest request, @PathVariable("userId") Integer userId,  @RequestParam("file") MultipartFile file) {
+        // 根据当前登录的用户来查询出对应的
+        String  filename = file.getOriginalFilename();
+        String prePath = userId + File.separator + System.currentTimeMillis() +"_"+ filename;
+        String fileFolder = System.getProperty("user.dir") + File.separator + userId ;
+        File saveFileFolder = new File( fileFolder);
+        if(!saveFileFolder.exists()) {
+            saveFileFolder.mkdirs();
+        }
+        String aimPicPath = System.getProperty("user.dir") + File.separator + prePath;
+        log.error("文件路径---{}",aimPicPath);
+        try {
+            file.transferTo(Paths.get(aimPicPath));
+        } catch (Exception ex) {
+            log.error("保存上传的文件异常");
+        }
+
+        // 更新用户信息
+        SysUser user = new SysUser();
+        user.setId(userId);
+        user.setAvator(showUrl + prePath);
+        iSysUserService.updateUserById(user);
+
+        return AjaxResult.success(showUrl + prePath);
+    }
+
+
+    /**
      * 注册对应的用户信息
      *
      * @param sysUser 用户信息
@@ -249,9 +284,24 @@ public class SystemController {
      */
     @PostMapping("/register")
     public AjaxResult signUp(@RequestBody SysUser sysUser) {
-        iSysUserService.insertUserInfo(sysUser);
+        // 校验是否存在对应的手机号以及邮箱
+        boolean existEmail = iSysUserService.existEmail(sysUser.getEmail());
+        if (existEmail) {
+            return AjaxResult.error(CodeEnum.EMAIL_EXIST);
+        }
+        sysUser.setCreateTime(new Date());
+        sysUser.setUpdateTime(new Date());
+        boolean exist = iSysUserService.insertUserInfo(sysUser);
         // 注册成功之后返回对应的token
-        return AjaxResult.success();
+        if (exist) {
+            LoginSuccessVo loginSuccessVo = new LoginSuccessVo();
+            BeanUtils.copyProperties(sysUser, loginSuccessVo);
+            String token = JWTUtil.createToken(sysUser);
+            loginSuccessVo.setToken(token);
+            loginSuccessVo.setUserId(sysUser.getId());
+            return AjaxResult.success("登录成功", loginSuccessVo);
+        }
+        return AjaxResult.error(CodeEnum.INSERT_FAIL);
     }
 
 

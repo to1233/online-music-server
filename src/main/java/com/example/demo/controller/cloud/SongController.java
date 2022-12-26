@@ -57,11 +57,17 @@ public class SongController {
      * @return JSONObject
      */
     @GetMapping("/detail/{songId}")
-    public AjaxResult findSongDetail(@PathVariable("songId") Integer songId) {
-        List<Integer> ids = new ArrayList<>();
+    public AjaxResult findSongDetail(@PathVariable("songId") String songId) {
+        List<String> ids = new ArrayList<>();
         ids.add(songId);
         SongSearchIdVo searchIdVo = new SongSearchIdVo(songId, "[{id:"+songId+"}]", ids, "");
         return AjaxResult.ajaxResult(cloudMusic.findSongDetailById(searchIdVo));
+    }
+
+
+    @GetMapping("/lyric/{songId}")
+    public AjaxResult findSongLyricInfo(@PathVariable("songId") String songId) {
+        return AjaxResult.ajaxResult(cloudMusic.findSongLyric(songId));
     }
 
     /**

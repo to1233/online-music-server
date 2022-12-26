@@ -53,6 +53,11 @@ public class KuwoSongController {
         return AjaxResult.ajaxResult(kuwoSongService.findSongDetailById(songId));
     }
 
+    @GetMapping("/lyric/{songId}")
+    public AjaxResult findSongLyricInfo(@PathVariable("songId") String songId) {
+        return AjaxResult.ajaxResult(kuwoSongService.findSongLyric(songId));
+    }
+
     /**
      * 根据歌曲id来查询出对应的歌曲播放url
      * @param songId 歌曲id

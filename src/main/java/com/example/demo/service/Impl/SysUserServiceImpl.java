@@ -84,6 +84,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return getBaseMapper().insert(sysUser) > 0;
     }
 
+    @Override
+    public boolean existEmail(String email) {
+        return getBaseMapper().selectCount(new QueryWrapper<SysUser>().eq(EMAIL, email)) > 0;
+    }
+
     private String getToken() {
         int temp = (int) (Math.random() * 1000);
         return String.valueOf(temp);

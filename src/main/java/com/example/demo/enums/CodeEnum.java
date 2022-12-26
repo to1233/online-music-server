@@ -37,7 +37,8 @@ public enum CodeEnum {
     UPDATE_FAIL(1005,"更新异常"),
     NOT_USER_NAME(1006,"用户名不存在"),
     NOT_PHONE(1007,"手机号不存在"),
-    LOGIN_ID_COMPARE(1008,"当前登录人员不匹配");
+    LOGIN_ID_COMPARE(1008,"当前登录人员不匹配"),
+    EMAIL_EXIST(1009,"邮箱已经存在");
 
     @Getter
     private final Integer code;

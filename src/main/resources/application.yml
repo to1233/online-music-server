@@ -1,14 +1,16 @@
 baseUrl:
   cloud: https://music.163.com/weapi
   songUrl: http://music.163.com/#/song?id=
+upload:
+  showUrl: http://81.68.130.140:8081/static/
 server:
   port: 8889
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver   # 81.68.130.140
     url: jdbc:mysql://localhost:3306/music?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: 123456  # 服务器mysql 的密码
+    password: 123456
   cache:
     type: jcache
     jcache:

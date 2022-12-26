@@ -23,13 +23,10 @@ public class QQSongController {
     @Resource
     private QQSongMusicImpl qqSongMusic;
 
-
     @PostMapping("/findSongList")
     public AjaxResult findSongList(@RequestBody SongSearchPageVo songSearchPageVo) {
         return AjaxResult.ajaxResult(qqSongMusic.search(songSearchPageVo));
     }
-
-
 
     /**
      * 根据歌曲id来查询出对应的歌曲播放url
@@ -39,6 +36,16 @@ public class QQSongController {
     @GetMapping("/findSongUrl/{songId}")
     public AjaxResult findSongUrl(@PathVariable("songId") String songId) {
         return AjaxResult.ajaxResult(qqSongMusic.findSongUrlById(songId));
+    }
+
+    /**
+     * 根据歌曲id来查询出对应的歌曲歌词
+     * @param songId 歌曲id
+     * @return JSONObject
+     */
+    @GetMapping("/findSongLyric/{songId}")
+    public AjaxResult findSongLyricById(@PathVariable("songId") String songId) {
+        return AjaxResult.ajaxResult(qqSongMusic.findSongLyricById(songId));
     }
 
 

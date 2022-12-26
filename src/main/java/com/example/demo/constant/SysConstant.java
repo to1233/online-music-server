@@ -37,5 +37,6 @@ public class SysConstant {
         public static final String ID = "id";
         public static final String PASSWORD = "password";
         public static final String SONG_SHEET_ID = "song_sheet_id";
+        public static final String EMAIL = "email";
     }
 }

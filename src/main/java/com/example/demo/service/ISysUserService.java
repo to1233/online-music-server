@@ -85,4 +85,11 @@ public interface ISysUserService {
      */
     boolean insertUserInfo(SysUser sysUser);
 
+    /**
+     * 校验是否存在相同的邮箱
+     * @param email 邮箱地址
+     * @return
+     */
+    boolean existEmail(String email);
+
 }

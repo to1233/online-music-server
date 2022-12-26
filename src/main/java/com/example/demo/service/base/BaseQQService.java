@@ -32,18 +32,14 @@ public class BaseQQService {
      * @param targetUrl 目标地址
      * @return JSONObject
      */
-    public JSONObject sendQQRequest(String targetUrl) {
-
+    public String sendQQRequest(String targetUrl) {
+        log.error("当前请求的url路径为---{}",targetUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Referer", "https://y.qq.com");
         //封装请求头
         HttpEntity<MultiValueMap<String, Object>> formEntity = new HttpEntity<MultiValueMap<String, Object>>(headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(targetUrl, HttpMethod.GET, formEntity, String.class);
-        String body2 = responseEntity.getBody(); //响应体
-        String jsonBody = body2.substring("jsonp4(".length(), body2.length() - 1);
-        JSONObject result = JSONObject.parseObject(jsonBody);
-        log.info("{}", result);
-        return result;
+        return responseEntity.getBody(); //响应体
     }
 
     /**

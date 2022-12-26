@@ -54,6 +54,17 @@ public class CloudSongMusicImpl extends BaseCloudService {
         return result.getJSONArray("songs");
     }
 
+    public String findSongLyric(String songId) {
+        String d = String.format("{\"id\":%s,\"lv\":-1,\"tv\":-1,\"csrf_token\":\"\"}",songId);
+        ParamVo paramVo = EncryptUtils.encrypt(d);
+        JSONObject result = sendCloudRequest( baseUrl+"/song/lyric?csrf_token=", paramVo, "");
+        JSONObject lrc =  result.getJSONObject("lrc");
+        if(lrc!=null) {
+            return lrc.getString("lyric");
+        }
+        return "";
+    }
+
 
     public JSONArray findSongUrlById(SongSearchUrlByIdVo songSearchUrlByIdVo) {
         ParamVo paramVo = EncryptUtils.encrypt(JSON.toJSONString(songSearchUrlByIdVo));

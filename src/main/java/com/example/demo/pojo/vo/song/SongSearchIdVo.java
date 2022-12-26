@@ -15,13 +15,13 @@ import java.util.List;
 @Data
 public class SongSearchIdVo {
 
-    private Integer id;
+    private String id;
 
     // JSON.stringify([{id: id}])
     private String c;
 
     // [ id ]
-    private List<Integer> ids;
+    private List<String> ids;
 
     private String csrf_token ="";
 }

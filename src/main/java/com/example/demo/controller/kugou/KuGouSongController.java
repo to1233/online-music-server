@@ -1,6 +1,7 @@
 package com.example.demo.controller.kugou;
 
 import com.example.demo.common.AjaxResult;
+import com.example.demo.pojo.vo.song.kugou.SearchSongLyricVo;
 import com.example.demo.pojo.vo.song.kuwo.SongSearchPageVo;
 import com.example.demo.service.Impl.KuGouSongServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -34,17 +35,18 @@ public class KuGouSongController {
 
     /**
      * 根据歌曲id来查询出对应的歌曲播放url
-     * @param songId 歌曲id
+     * @param searchSongLyricVo 歌曲id 以及专辑id
      * @return JSONObject
      */
-    @GetMapping("/findSongUrl/{songId}")
-    public AjaxResult findSongUrl(@PathVariable("songId") String songId) {
-        return AjaxResult.ajaxResult(kuGouSongService.findSongUrlById(songId));
+    @PostMapping("/findSongUrl")
+    public AjaxResult findSongUrl(@RequestBody SearchSongLyricVo searchSongLyricVo) {
+        return AjaxResult.ajaxResult(kuGouSongService.findSongUrlById(searchSongLyricVo));
     }
 
     @GetMapping("/findSongUrlVip/{songId}")
     public AjaxResult findSongUrlVip(@PathVariable("songId") String songId) {
         return AjaxResult.ajaxResult(kuGouSongService.findSongUrlVip(songId));
     }
+
 
 }
